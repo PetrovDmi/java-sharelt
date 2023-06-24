@@ -15,7 +15,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 public class BookingDto {
 
     @PositiveOrZero
-    long id;
+    private long id;
     private ItemDto item;
     private UserDto booker;
     private Status status;

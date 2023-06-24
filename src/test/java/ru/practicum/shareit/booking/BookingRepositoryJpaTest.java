@@ -19,6 +19,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -103,9 +104,15 @@ public class BookingRepositoryJpaTest {
         bookingRepository.save(bookingTestMap.get(6L));
 
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdOrderByBookingStartDesc(userTestMap.get(2L).getId(), page);
+                .findAllByBookerIdOrderByBookingStartDesc(userTestMap.get(2L).getId(), page);
 
-        Assertions.assertEquals(1, bookings.size());
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(bookingTestMap.get(1L).getId());
+        assertThat(bookings.get(0).getItem().getId()).isEqualTo(bookingTestMap.get(1L).getItem().getId());
+        assertThat(bookings.get(0).getBooker().getId()).isEqualTo(bookingTestMap.get(1L).getBooker().getId());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(1L).getStatus());
+        assertThat(bookings.get(0).getBookingStart()).isEqualTo(bookingTestMap.get(1L).getBookingStart());
+        assertThat(bookings.get(0).getBookingEnd()).isEqualTo(bookingTestMap.get(1L).getBookingEnd());
     }
 
     @Test
@@ -118,10 +125,22 @@ public class BookingRepositoryJpaTest {
         bookingRepository.save(bookingTestMap.get(6L));
 
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdAndBookingStartIsAfterOrderByBookingStartDesc(
-                userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
+                .findAllByBookerIdAndBookingStartIsAfterOrderByBookingStartDesc(
+                        userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
 
-        Assertions.assertEquals(2, bookings.size());
+        assertThat(bookings).hasSize(2);
+        assertThat(bookings.get(0).getId()).isEqualTo(bookingTestMap.get(4L).getId());
+        assertThat(bookings.get(0).getItem().getId()).isEqualTo(bookingTestMap.get(4L).getItem().getId());
+        assertThat(bookings.get(0).getBooker().getId()).isEqualTo(bookingTestMap.get(4L).getBooker().getId());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(4L).getStatus());
+        assertThat(bookings.get(0).getBookingStart()).isEqualTo(bookingTestMap.get(4L).getBookingStart());
+        assertThat(bookings.get(0).getBookingEnd()).isEqualTo(bookingTestMap.get(4L).getBookingEnd());
+        assertThat(bookings.get(1).getId()).isEqualTo(bookingTestMap.get(5L).getId());
+        assertThat(bookings.get(1).getItem().getId()).isEqualTo(bookingTestMap.get(5L).getItem().getId());
+        assertThat(bookings.get(1).getBooker().getId()).isEqualTo(bookingTestMap.get(5L).getBooker().getId());
+        assertThat(bookings.get(1).getStatus()).isEqualTo(bookingTestMap.get(5L).getStatus());
+        assertThat(bookings.get(1).getBookingStart()).isEqualTo(bookingTestMap.get(5L).getBookingStart());
+        assertThat(bookings.get(1).getBookingEnd()).isEqualTo(bookingTestMap.get(5L).getBookingEnd());
     }
 
     @Test
@@ -134,10 +153,12 @@ public class BookingRepositoryJpaTest {
         bookingRepository.save(bookingTestMap.get(6L));
 
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdAndBookingEndIsBeforeOrderByBookingStartDesc(
-                userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
+                .findAllByBookerIdAndBookingEndIsBeforeOrderByBookingStartDesc(
+                        userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
 
-        Assertions.assertEquals(2, bookings.size());
+        assertThat(bookings).hasSize(2);
+        assertThat(bookings.get(0)).isEqualTo(bookingTestMap.get(2L));
+        assertThat(bookings.get(1)).isEqualTo(bookingTestMap.get(3L));
     }
 
     @Test
@@ -150,10 +171,16 @@ public class BookingRepositoryJpaTest {
         bookingRepository.save(bookingTestMap.get(6L));
 
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdAndStatusOrderByBookingStartDesc(
-                userTestMap.get(3L).getId(), Status.WAITING, page);
+                .findAllByBookerIdAndStatusOrderByBookingStartDesc(
+                        userTestMap.get(3L).getId(), Status.WAITING, page);
 
-        Assertions.assertEquals(1, bookings.size());
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(bookingTestMap.get(5L).getId());
+        assertThat(bookings.get(0).getItem().getId()).isEqualTo(bookingTestMap.get(5L).getItem().getId());
+        assertThat(bookings.get(0).getBooker().getId()).isEqualTo(bookingTestMap.get(5L).getBooker().getId());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(5L).getStatus());
+        assertThat(bookings.get(0).getBookingStart()).isEqualTo(bookingTestMap.get(5L).getBookingStart());
+        assertThat(bookings.get(0).getBookingEnd()).isEqualTo(bookingTestMap.get(5L).getBookingEnd());
     }
 
     @Test
@@ -166,39 +193,29 @@ public class BookingRepositoryJpaTest {
         bookingRepository.save(bookingTestMap.get(6L));
 
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdAndStartBeforeAndEndAfter(
-                userTestMap.get(2L).getId(), LocalDateTime.now().minusMinutes(1), page);
+                .findAllByBookerIdAndStartBeforeAndEndAfter(
+                        userTestMap.get(2L).getId(), LocalDateTime.now().minusMinutes(1), page);
 
-        Assertions.assertEquals(1, bookings.size());
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0)).isEqualTo(bookingTestMap.get(1L));
+        assertThat(bookings.get(0).getItem()).isEqualTo(bookingTestMap.get(1L).getItem());
+        assertThat(bookings.get(0).getBooker()).isEqualTo(bookingTestMap.get(1L).getBooker());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(1L).getStatus());
+        assertThat(bookings.get(0).getBookingStart()).isEqualTo(bookingTestMap.get(1L).getBookingStart());
+        assertThat(bookings.get(0).getBookingEnd()).isEqualTo(bookingTestMap.get(1L).getBookingEnd());
     }
 
     @Test
-    void findAllByOwnerIdShouldReturnListOfBookings() {
-        bookingRepository.save(bookingTestMap.get(1L));
-        bookingRepository.save(bookingTestMap.get(2L));
-        bookingRepository.save(bookingTestMap.get(3L));
-        bookingRepository.save(bookingTestMap.get(4L));
-        bookingRepository.save(bookingTestMap.get(5L));
-        bookingRepository.save(bookingTestMap.get(6L));
+    void testFindAllByOwnerIdAndStartAfterAndEndBeforeShouldReturnListOfBookings() {
+        bookingRepository.saveAll(bookingTestMap.values());
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerId(1L, page);
+        LocalDateTime start = LocalDateTime.now().minusMinutes(1);
+        LocalDateTime end = LocalDateTime.now().plusHours(1);
+        List<Booking> result = bookingRepository.findAllByOwnerIdAndStartAfterAndEndBefore(
+                1L, start, page);
 
-        Assertions.assertEquals(2, bookings.size());
-    }
-
-    @Test
-    void findAllByOwnerIdAndStartAfterAndEndBeforeShouldReturnListOfBookings() {
-        bookingRepository.save(bookingTestMap.get(1L));
-        bookingRepository.save(bookingTestMap.get(2L));
-        bookingRepository.save(bookingTestMap.get(3L));
-        bookingRepository.save(bookingTestMap.get(4L));
-        bookingRepository.save(bookingTestMap.get(5L));
-        bookingRepository.save(bookingTestMap.get(6L));
-
-        List<Booking> bookings = bookingRepository.findAllByOwnerIdAndStartAfterAndEndBefore(
-            1L, LocalDateTime.now().minusMinutes(1), page);
-
-        Assertions.assertEquals(1, bookings.size());
+        Assertions.assertEquals(1, result.size());
+        Booking expectedBooking = bookingTestMap.get(6L);
     }
 
     @Test

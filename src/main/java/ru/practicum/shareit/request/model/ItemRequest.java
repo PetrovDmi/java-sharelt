@@ -22,9 +22,6 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,11 +34,8 @@ public class ItemRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @PositiveOrZero
     private long id;
-    @NotNull
-    @NotBlank
     @Column(nullable = false)
     private String description;
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requester_id", nullable = false)
     private User requester;

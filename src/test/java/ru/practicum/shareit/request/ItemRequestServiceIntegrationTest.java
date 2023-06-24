@@ -54,8 +54,6 @@ public class ItemRequestServiceIntegrationTest {
         ItemRequest itemRequest = requestService.addItemRequest(itemRequestTestMap.get(1L),
             itemRequestTestMap.get(1L).getRequester().getId());
 
-        // ItemRequest itemRequest = requestService.getItemRequestById(1L, 1L);
-
         Assertions.assertEquals(itemRequestTestMap.get(1L).getId(), itemRequest.getId());
         Assertions.assertEquals(itemRequestTestMap.get(1L).getCreated(), itemRequest.getCreated());
         Assertions.assertEquals(itemRequestTestMap.get(1L).getRequester().getId(),

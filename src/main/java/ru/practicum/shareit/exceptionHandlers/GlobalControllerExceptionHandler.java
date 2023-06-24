@@ -31,7 +31,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleRunTimeException(final RuntimeException exception) {
+    public Map<String, String> handleRunTimeException(final RuntimeException exception) { // Тут должна выбрасываться именно Runtime
         log.error("Неизвестная ошибка");
         return Map.of("Что-то пошло не так", exception.getMessage());
     }
@@ -41,6 +41,6 @@ public class GlobalControllerExceptionHandler {
     public ErrorResponse handleStateNotSupportedException(
         final StateNotSupportedException exception) {
         log.error("Ошибка получения состояния бронирования");
-        return new ErrorResponse(400, "Bad Request", exception.getMessage());
+        return new ErrorResponse(500, "Bad Request", exception.getMessage());
     }
 }

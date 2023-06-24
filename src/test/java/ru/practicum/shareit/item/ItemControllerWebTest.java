@@ -49,13 +49,13 @@ import ru.practicum.shareit.user.service.UserService;
 public class ItemControllerWebTest {
 
     @MockBean
-    ItemService itemService;
+    private ItemService itemService;
     @MockBean
-    BookingService bookingService;
+    private BookingService bookingService;
     @MockBean
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private ObjectMapper mapper;
@@ -63,7 +63,7 @@ public class ItemControllerWebTest {
     private MockMvc mvc;
 
     private PageRequest page = org.springframework.data.domain.PageRequest.of(0, 10);
-    LocalDateTime created = LocalDateTime.of(2023, 5, 19,
+    private final LocalDateTime created = LocalDateTime.of(2023, 5, 19,
         10, 0, 0);
 
     private final Map<Long, User> userTestMap = Map.of(

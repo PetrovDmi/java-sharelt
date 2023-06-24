@@ -12,4 +12,5 @@ public interface RequestRepository extends JpaRepository<ItemRequest, Long> {
 
     @Query("select r from ItemRequest r where r.requester.id <> ?1 order by r.id DESC")
     List<ItemRequest> findByRequesterNotOrderByIdDesc(long requesterId, Pageable pageable);
+
 }

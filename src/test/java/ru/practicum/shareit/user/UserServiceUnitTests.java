@@ -18,8 +18,7 @@ import ru.practicum.shareit.user.service.UserServiceImpl;
 @SpringBootTest
 
 public class UserServiceUnitTests {
-
-    UserService userService;
+    private UserService userService;
 
     private UserRepository mockUserRepository;
 

@@ -20,9 +20,6 @@ import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.service.BookingService;
 
-/**
- * TODO Sprint add-bookings.
- */
 @RestController
 @RequestMapping(path = "/bookings")
 @Slf4j
@@ -59,7 +56,7 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getCurrentBookingForUser(
-        @RequestParam(required = false, defaultValue = "ALL") String state,
+        @RequestParam(defaultValue = "ALL") String state,
         @RequestHeader("X-Sharer-User-Id") Long userId,
         @RequestParam(defaultValue = "0") @Min(0) Integer from,
         @RequestParam(defaultValue = "10") @Min(1) Integer size) {

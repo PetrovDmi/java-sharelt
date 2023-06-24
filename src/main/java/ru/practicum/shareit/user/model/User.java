@@ -14,10 +14,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,13 +24,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @PositiveOrZero
     private long id;
-    @NotBlank
     @Column(nullable = false)
     private String name;
     @Email
-    @NotBlank
     @Column(nullable = false, length = 512, unique = true)
     private String email;
 }

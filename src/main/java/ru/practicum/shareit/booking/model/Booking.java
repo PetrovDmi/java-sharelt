@@ -1,15 +1,8 @@
 package ru.practicum.shareit.booking.model;
 
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +10,6 @@ import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.model.enums.Status;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
-
-/**
- * TODO Sprint add-bookings.
- */
 
 @Data
 @Entity
@@ -42,6 +31,7 @@ public class Booking {
     @JoinColumn(name = "booker_id")
     private User booker;
 
+    @Enumerated
     @Column(name = "status")
     private Status status;
 

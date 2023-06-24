@@ -11,9 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-/*
-Местные тесты особо не несут смысловой нагрузки, но я разбирался как устроено DataJpaTest
-*/
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserRepositoryJpaTest {
@@ -21,7 +18,7 @@ public class UserRepositoryJpaTest {
     @Autowired
     private TestEntityManager entityManager;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     List<User> testUsersList = List.of(
         User.builder().name("TestUserOne").email("testuserone@yandex.ru").build(),

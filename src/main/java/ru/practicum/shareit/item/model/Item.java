@@ -28,13 +28,10 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Positive
     @Column(name = "user_id", nullable = false)
     private long userId;
-    @NotBlank
     @Column(nullable = false)
     private String name;
-    @NotBlank
     @Column(nullable = false, length = 1000)
     private String description;
     @Column(nullable = false)
