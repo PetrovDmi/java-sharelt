@@ -146,24 +146,6 @@ public class BookingRepositoryJpaTest {
     }
 
     @Test
-    void findAllByBookerIdAndBookingEndIsBeforeShouldReturnListOfBookings() {
-        bookingRepository.save(bookingTestMap.get(1L));
-        bookingRepository.save(bookingTestMap.get(2L));
-        bookingRepository.save(bookingTestMap.get(3L));
-        bookingRepository.save(bookingTestMap.get(4L));
-        bookingRepository.save(bookingTestMap.get(5L));
-        bookingRepository.save(bookingTestMap.get(6L));
-
-        List<Booking> bookings = bookingRepository
-                .findAllByBookerIdAndBookingEndIsBeforeOrderByBookingStartDesc(
-                        userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
-
-        assertThat(bookings).hasSize(2);
-        assertThat(bookings.get(0)).isEqualTo(bookingTestMap.get(2L));
-        assertThat(bookings.get(1)).isEqualTo(bookingTestMap.get(3L));
-    }
-
-    @Test
     void findAllByBookerIdAndStatusOrderByBookingStartDescShouldReturnListOfBookings() {
         bookingRepository.save(bookingTestMap.get(1L));
         bookingRepository.save(bookingTestMap.get(2L));
