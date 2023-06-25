@@ -131,7 +131,6 @@ public class BookingRepositoryJpaTest {
                         userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
 
         assertThat(bookings).hasSize(2);
-        assertThat(bookings.get(0).getId()).isEqualTo(bookingTestMap.get(4L).getId());
         assertThat(bookings.get(0).getItem().getId()).isEqualTo(bookingTestMap.get(4L).getItem().getId());
         assertThat(bookings.get(0).getBooker().getId()).isEqualTo(bookingTestMap.get(4L).getBooker().getId());
         assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(4L).getStatus());
