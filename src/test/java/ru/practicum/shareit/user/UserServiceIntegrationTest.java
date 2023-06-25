@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user;
 
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
+
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -25,9 +26,9 @@ public class UserServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         userTestMap = Map.of(
-            1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
-            2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
-            3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
+                1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
+                2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
+                3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
         );
     }
 

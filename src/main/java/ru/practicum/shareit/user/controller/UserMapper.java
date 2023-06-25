@@ -12,8 +12,7 @@ public class UserMapper {
     private final ModelMapper modelMapper = new ModelMapper();
 
     public UserDto convertToDto(User user) {
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
     }
 
     public User convertToEntity(UserService userService, UserDto userDto, Long userId) {

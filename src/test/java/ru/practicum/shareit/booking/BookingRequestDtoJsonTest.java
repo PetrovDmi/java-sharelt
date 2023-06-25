@@ -1,8 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -10,18 +7,21 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JsonTest
 public class BookingRequestDtoJsonTest {
-
     @Autowired
     private JacksonTester<BookingRequestDto> jsonBookingRequestDto;
 
     @Test
     void testBookingDto() throws Exception {
         LocalDateTime start = LocalDateTime.of(2023, 5, 19,
-            10, 0, 0);
+                10, 0, 0);
         LocalDateTime end = LocalDateTime.of(2023, 5, 19,
-            12, 0, 0);
+                12, 0, 0);
 
         BookingRequestDto bookingRequestDto = new BookingRequestDto(1, 2, start, end);
 

@@ -1,8 +1,9 @@
 package ru.practicum.shareit.item.service;
 
-import java.util.List;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+
+import java.util.List;
 
 public interface ItemService {
 

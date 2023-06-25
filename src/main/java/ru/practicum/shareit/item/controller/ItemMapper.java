@@ -1,7 +1,5 @@
 package ru.practicum.shareit.item.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,6 +13,8 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.service.ItemService;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
@@ -54,7 +54,7 @@ public class ItemMapper {
     }
 
     public List<ItemDto> convertToDtoListOfItems(List<Item> items, boolean isOwner) {
-        if (items == null || items.isEmpty() || items.size() == 0) {
+        if (items == null || items.isEmpty()) {
             return new ArrayList<>();
         }
         ArrayList<ItemDto> itemDtos = new ArrayList<>();
@@ -69,7 +69,7 @@ public class ItemMapper {
     }
 
     public Item convertToEntity(ItemService itemService, ItemDto itemDto, Long itemId,
-        Long userId) {
+                                Long userId) {
         Item item = modelMapper.map(itemDto, Item.class);
         if (itemId != 0) {
             item.setId(itemId);
