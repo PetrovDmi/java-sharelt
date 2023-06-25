@@ -1,14 +1,15 @@
 package ru.practicum.shareit.user;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import ru.practicum.shareit.user.dto.UserDto;
+
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @JsonTest
 public class UserDtoJsonTest {
@@ -25,7 +26,7 @@ public class UserDtoJsonTest {
         assertThat(dto).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(dto).extractingJsonPathStringValue("$.name").isEqualTo("John");
         assertThat(dto).extractingJsonPathStringValue("$.email")
-            .isEqualTo("jonnysilverhand@yandex.ru");
+                .isEqualTo("jonnysilverhand@yandex.ru");
     }
 
 }

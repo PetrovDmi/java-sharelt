@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user;
 
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -21,9 +22,9 @@ public class UserRepositoryJpaTest {
     private UserRepository userRepository;
 
     List<User> testUsersList = List.of(
-        User.builder().name("TestUserOne").email("testuserone@yandex.ru").build(),
-        User.builder().name("TestUserTwo").email("testusertwo@yandex.ru").build(),
-        User.builder().name("TestUserThree").email("testuserthree@yandex.ru").build()
+            User.builder().name("TestUserOne").email("testuserone@yandex.ru").build(),
+            User.builder().name("TestUserTwo").email("testusertwo@yandex.ru").build(),
+            User.builder().name("TestUserThree").email("testuserthree@yandex.ru").build()
     );
 
     @Test

@@ -1,8 +1,5 @@
 package ru.practicum.shareit.item;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +17,10 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -34,30 +35,30 @@ public class ItemServiceIntegrationTest {
 
     private PageRequest page = PageRequest.of(0, 10);
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
-        10, 0, 0);
+            10, 0, 0);
 
     private final Map<Long, User> userTestMap = Map.of(
-        1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
-        2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
-        3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
+            1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
+            2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
+            3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
     );
 
     private final Map<Long, Item> itemTestMap = Map.of(
-        1L, new Item(1, userTestMap.get(1L).getId(), "Дрель",
-            "Описание дрели", true, null),
-        2L, new Item(2, userTestMap.get(2L).getId(), "Молоток",
-            "Описание молотка", true, null),
-        3L, new Item(3, userTestMap.get(2L).getId(), "Кувалда",
-            "Описание кувалды", true, null),
-        4L, new Item(4, userTestMap.get(2L).getId(), "Кувалда мини",
-            "Описание кувалды мини", false, null)
+            1L, new Item(1, userTestMap.get(1L).getId(), "Дрель",
+                    "Описание дрели", true, null),
+            2L, new Item(2, userTestMap.get(2L).getId(), "Молоток",
+                    "Описание молотка", true, null),
+            3L, new Item(3, userTestMap.get(2L).getId(), "Кувалда",
+                    "Описание кувалды", true, null),
+            4L, new Item(4, userTestMap.get(2L).getId(), "Кувалда мини",
+                    "Описание кувалды мини", false, null)
     );
 
     Comment comment = new Comment(1, "All Good", itemTestMap.get(1L),
-        userTestMap.get(2L), created);
+            userTestMap.get(2L), created);
 
     Booking booking = new Booking(1, itemTestMap.get(1L), userTestMap.get(2L), Status.APPROVED,
-        created.minusHours(4), created.minusHours(1));
+            created.minusHours(4), created.minusHours(1));
 
     @BeforeEach
     void setUp() {

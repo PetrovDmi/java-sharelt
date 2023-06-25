@@ -1,8 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +11,12 @@ import ru.practicum.shareit.booking.model.enums.Status;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JsonTest
 public class BookingDtoJsonTest {
-
     @Autowired
     private JacksonTester<BookingDto> jsonBookingDto;
 
@@ -26,19 +26,19 @@ public class BookingDtoJsonTest {
     @BeforeEach
     void setUp() {
         itemDto = new ItemDto(1L, "Дрель", "Какая-то дрель",
-            true, null, null, null, null);
+                true, null, null, null, null);
         userDto = new UserDto(1L, "Jonny", "cats@yandex.ru");
     }
 
     @Test
     void testBookingDto() throws Exception {
         LocalDateTime start = LocalDateTime.of(2023, 5, 19,
-            10, 0, 0);
+                10, 0, 0);
         LocalDateTime end = LocalDateTime.of(2023, 5, 19,
-            12, 0, 0);
+                12, 0, 0);
 
         BookingDto bookingDto = new BookingDto(1L, itemDto, userDto, Status.WAITING,
-            start, end);
+                start, end);
 
         JsonContent<BookingDto> dto = jsonBookingDto.write(bookingDto);
 

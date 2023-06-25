@@ -1,10 +1,5 @@
 package ru.practicum.shareit.item.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +14,12 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.service.UserService;
+
+import javax.validation.ValidationException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -71,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
             return new ArrayList<>();
         }
         PageRequest page = PageRequest.of(from > 0 ? from / size : 0, size);
-        return itemRepository.findByNameOrDescriptionLike(text.toLowerCase(),page);
+        return itemRepository.findByNameOrDescriptionLike(text.toLowerCase(), page);
     }
 
     @Override
@@ -97,20 +98,20 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean isItemAvailable(long itemId) {
         isItemExists(itemId);
-        return getItem(itemId).getAvailable().booleanValue();
+        return getItem(itemId).getAvailable();
     }
 
     @Override
     public boolean isUserAnItemOwner(long userId, Item item) {
-        return item.getUserId() == userId ? true : false;
+        return item.getUserId() == userId;
     }
 
     @Override
     public boolean isUserAnItemsOwner(long userId, List<Item> items) {
-        if (items.isEmpty() || items.size() == 0) {
+        if (items.isEmpty()) {
             return false;
         }
-        return items.get(0).getUserId() == userId ? true : false;
+        return items.get(0).getUserId() == userId;
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ItemServiceImpl implements ItemService {
         log.info("Добавление комментария");
         if (!isUserWasAnItemBooker(comment.getAuthor().getId(), comment.getItem().getId())) {
             throw new ValidationException(
-                "Комментировать могут только бронировавшие вещь пользователи");
+                    "Комментировать могут только бронировавшие вещь пользователи");
         }
         commentRepository.save(comment);
     }
@@ -134,7 +135,7 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getItemsByRequestId(long requestId) {
         log.info("Получение предметов по запросу с id " + requestId);
         PageRequest page = PageRequest.of(0, ITEM_LIST_PAGE_SIZE);
-        return itemRepository.findAllByRequestIdOrderById(requestId,page);
+        return itemRepository.findAllByRequestIdOrderById(requestId, page);
     }
 
     @Override
@@ -148,13 +149,13 @@ public class ItemServiceImpl implements ItemService {
     public boolean isUserWasAnItemBooker(long userId, long itemId) {
         PageRequest page = PageRequest.of(0, ITEM_LIST_PAGE_SIZE);
         List<Booking> bookings = bookingRepository
-            .findAllByBookerIdOrderByBookingStartDesc(userId, page);
-        if (bookings.size() == 0 || bookings.isEmpty()) {
+                .findAllByBookerIdOrderByBookingStartDesc(userId, page);
+        if (bookings.size() == 0) {
             return false;
         }
         for (Booking booking : bookings) {
             if (booking.getItem().getId() == itemId && booking.getStatus()
-                .equals(Status.APPROVED) && booking.getBookingEnd().isBefore(LocalDateTime.now())) {
+                    .equals(Status.APPROVED) && booking.getBookingEnd().isBefore(LocalDateTime.now())) {
                 return true;
             }
         }

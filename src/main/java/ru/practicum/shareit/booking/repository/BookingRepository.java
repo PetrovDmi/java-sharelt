@@ -1,12 +1,13 @@
 package ru.practicum.shareit.booking.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.enums.Status;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
@@ -49,14 +50,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findAllByOwnerIdAndState(long ownerId, Status status, Pageable pageable);
 
     @Query(value = "select b from Booking b where b.item.id = ?1 and b.bookingStart > ?2 "
-        + "and b.status <> ?3 order by b.bookingStart asc")
+            + "and b.status <> ?3 order by b.bookingStart asc")
     List<Booking> findAllByItemAndStateFuture(long itemId, LocalDateTime localDateTime,
-        Status status);
+                                              Status status);
 
     @Query(value =
-        "select b from Booking b where b.item.id = ?1 "
-            + "and ( b.bookingEnd < ?2 or b.bookingStart < ?2) "
-            + "and b.status <> ?3 order by b.bookingEnd desc")
+            "select b from Booking b where b.item.id = ?1 "
+                    + "and ( b.bookingEnd < ?2 or b.bookingStart < ?2) "
+                    + "and b.status <> ?3 order by b.bookingEnd desc")
     List<Booking> findAllByItemAndStatePast(long itemId, LocalDateTime localDateTime,
-        Status status);
+                                            Status status);
 }

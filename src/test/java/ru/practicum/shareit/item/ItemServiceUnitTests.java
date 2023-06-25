@@ -1,11 +1,5 @@
 package ru.practicum.shareit.item;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import javax.validation.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +19,13 @@ import ru.practicum.shareit.item.service.ItemServiceImpl;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
+import javax.validation.ValidationException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 @SpringBootTest
 public class ItemServiceUnitTests {
 
@@ -36,32 +37,32 @@ public class ItemServiceUnitTests {
 
     private PageRequest page = PageRequest.of(0, 10);
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
-        10, 0, 0);
+            10, 0, 0);
 
     private final Map<Long, User> userTestMap = Map.of(
-        1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
-        2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
-        3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
+            1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
+            2L, new User(2, "testUserTwo", "testUserTwo@yandex.ru"),
+            3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
     );
 
     private final Map<Long, Item> itemTestMap = Map.of(
-        1L, new Item(1, userTestMap.get(1L).getId(), "Дрель",
-            "Описание дрели", true, null),
-        2L, new Item(2, userTestMap.get(2L).getId(), "Молоток",
-            "Описание молотка", true, null),
-        3L, new Item(3, userTestMap.get(2L).getId(), "Кувалда",
-            "Описание кувалды", true, null),
-        4L, new Item(4, userTestMap.get(2L).getId(), "Кувалда мини",
-            "Описание кувалды мини", false, null)
+            1L, new Item(1, userTestMap.get(1L).getId(), "Дрель",
+                    "Описание дрели", true, null),
+            2L, new Item(2, userTestMap.get(2L).getId(), "Молоток",
+                    "Описание молотка", true, null),
+            3L, new Item(3, userTestMap.get(2L).getId(), "Кувалда",
+                    "Описание кувалды", true, null),
+            4L, new Item(4, userTestMap.get(2L).getId(), "Кувалда мини",
+                    "Описание кувалды мини", false, null)
     );
 
     Comment comment = new Comment(1, "All Good", itemTestMap.get(1L),
-        userTestMap.get(2L), created);
+            userTestMap.get(2L), created);
     Comment commentBad = new Comment(1, "All Good", itemTestMap.get(2L),
-        userTestMap.get(3L), created);
+            userTestMap.get(3L), created);
 
     Booking booking = new Booking(1, itemTestMap.get(1L), userTestMap.get(2L), Status.APPROVED,
-        created.minusHours(4), created.minusHours(1));
+            created.minusHours(4), created.minusHours(1));
 /*
     ItemRequest itemRequest = new ItemRequest(1, "Ищу дрель", userTestMap.get(3L),
         created,null);*/
@@ -74,36 +75,36 @@ public class ItemServiceUnitTests {
         mockUserService = Mockito.mock(UserService.class);
 
         itemService = new ItemServiceImpl(mockItemRepository, mockCommentRepository,
-            mockUserService,
-            mockBookingRepository);
+                mockUserService,
+                mockBookingRepository);
 
         Mockito.when(mockItemRepository.findById(5L)).thenReturn(Optional.empty());
         Mockito.when(mockItemRepository.findById(1L)).thenReturn(
-            Optional.ofNullable(itemTestMap.get(1L)));
+                Optional.ofNullable(itemTestMap.get(1L)));
         Mockito.when(mockItemRepository.findById(2L)).thenReturn(
-            Optional.ofNullable(itemTestMap.get(2L)));
+                Optional.ofNullable(itemTestMap.get(2L)));
         Mockito.when(mockItemRepository.findById(3L)).thenReturn(
-            Optional.ofNullable(itemTestMap.get(3L)));
+                Optional.ofNullable(itemTestMap.get(3L)));
         Mockito.when(mockItemRepository.findById(4L)).thenReturn(
-            Optional.ofNullable(itemTestMap.get(4L)));
+                Optional.ofNullable(itemTestMap.get(4L)));
         Mockito.when(mockItemRepository.findById(5L))
-            .thenThrow(new NotFoundException("Пользователь не найден"));
+                .thenThrow(new NotFoundException("Пользователь не найден"));
 
         Mockito.when(mockItemRepository.findByNameOrDescriptionLike("1", page))
-            .thenReturn(List.of(itemTestMap.get(1L), itemTestMap.get(2L), itemTestMap.get(3L),
-                itemTestMap.get(4L)));
+                .thenReturn(List.of(itemTestMap.get(1L), itemTestMap.get(2L), itemTestMap.get(3L),
+                        itemTestMap.get(4L)));
 
         Mockito.when(mockItemRepository.findAllByUserIdOrderById(1L))
-            .thenReturn(List.of(itemTestMap.get(1L)));
+                .thenReturn(List.of(itemTestMap.get(1L)));
 
         Mockito.when(mockCommentRepository.findById(1L)).thenReturn(Optional.ofNullable(comment));
         Mockito.when(mockBookingRepository.findAllByBookerIdOrderByBookingStartDesc(2, page))
-            .thenReturn(List.of(booking));
+                .thenReturn(List.of(booking));
         Mockito.when(mockBookingRepository.findAllByBookerIdOrderByBookingStartDesc(3, page))
-            .thenReturn(List.of(booking));
+                .thenReturn(List.of(booking));
 
         Mockito.when(mockItemRepository.findAllByRequestIdOrderById(1L, page))
-            .thenReturn(List.of(itemTestMap.get(1L)));
+                .thenReturn(List.of(itemTestMap.get(1L)));
 
         Mockito.when(mockUserService.isUserExists(1L)).thenReturn(true);
         Mockito.when(mockUserService.isUserExists(2L)).thenReturn(true);
@@ -116,13 +117,13 @@ public class ItemServiceUnitTests {
         itemService.addItem(itemTestMap.get(1L));
 
         Mockito.verify(mockItemRepository, Mockito.times(1))
-            .save(itemTestMap.get(1L));
+                .save(itemTestMap.get(1L));
     }
 
     @Test
     void getItemShouldThrowNotFoundExceptionUser() {
         final NotFoundException exception = Assertions.assertThrows(NotFoundException.class,
-            () -> itemService.getItem(5L)
+                () -> itemService.getItem(5L)
         );
         Assertions.assertEquals("Пользователь не найден", exception.getMessage());
     }
@@ -143,7 +144,7 @@ public class ItemServiceUnitTests {
         itemService.deleteItemById(1L);
 
         Mockito.verify(mockItemRepository, Mockito.times(1))
-            .deleteById(1L);
+                .deleteById(1L);
     }
 
     @Test
@@ -219,7 +220,7 @@ public class ItemServiceUnitTests {
     @Test
     void isUserAnItemsOwnerShouldReturnFalse() {
         boolean flag = itemService.isUserAnItemsOwner(1L, List.of(itemTestMap.get(3L),
-            itemTestMap.get(2L)));
+                itemTestMap.get(2L)));
 
         Assertions.assertFalse(flag);
     }
@@ -227,7 +228,7 @@ public class ItemServiceUnitTests {
     @Test
     void isUserAnItemsOwnerShouldReturnTrue() {
         boolean flag = itemService.isUserAnItemsOwner(2L, List.of(itemTestMap.get(3L),
-            itemTestMap.get(2L)));
+                itemTestMap.get(2L)));
 
         Assertions.assertTrue(flag);
     }
@@ -236,16 +237,16 @@ public class ItemServiceUnitTests {
     void addCommentToItemShouldAddComment() {
         itemService.addCommentToItem(comment);
         Mockito.verify(mockCommentRepository, Mockito.times(1))
-            .save(comment);
+                .save(comment);
     }
 
     @Test
     void addCommentToItemNotGottenShouldThrowValidationException() {
         final ValidationException exception = Assertions.assertThrows(ValidationException.class,
-            () -> itemService.addCommentToItem(commentBad)
+                () -> itemService.addCommentToItem(commentBad)
         );
         Assertions.assertEquals("Комментировать могут только бронировавшие вещь "
-            + "пользователи", exception.getMessage());
+                + "пользователи", exception.getMessage());
     }
 
     @Test
@@ -265,7 +266,7 @@ public class ItemServiceUnitTests {
 
         Assertions.assertEquals(1, items.size());
         Mockito.verify(mockItemRepository, Mockito.times(1))
-            .findAllByRequestIdOrderById(1L, page);
+                .findAllByRequestIdOrderById(1L, page);
     }
 
     @Test
@@ -276,7 +277,7 @@ public class ItemServiceUnitTests {
     @Test
     void isUserExistsOrExceptionUserNotExistsShouldThrowNotFoundException() {
         final NotFoundException exception = Assertions.assertThrows(NotFoundException.class,
-            () -> itemService.isUserExistsOrException(4L)
+                () -> itemService.isUserExistsOrException(4L)
         );
 
         Assertions.assertEquals("Пользователь не найден!", exception.getMessage());

@@ -1,7 +1,5 @@
 package ru.practicum.shareit.exceptionHandlers;
 
-import java.util.Map;
-import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exceptionHandlers.Entity.ErrorResponse;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.StateNotSupportedException;
+
+import javax.validation.ValidationException;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -31,7 +32,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleRunTimeException(final RuntimeException exception) { // Тут должна выбрасываться именно Runtime
+    public Map<String, String> handleRunTimeException(final RuntimeException exception) {
         log.error("Неизвестная ошибка");
         return Map.of("Что-то пошло не так", exception.getMessage());
     }
@@ -39,7 +40,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleStateNotSupportedException(
-        final StateNotSupportedException exception) {
+            final StateNotSupportedException exception) {
         log.error("Ошибка получения состояния бронирования");
         return new ErrorResponse(500, "Bad Request", exception.getMessage());
     }
