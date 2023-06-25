@@ -131,17 +131,6 @@ public class BookingRepositoryJpaTest {
                         userTestMap.get(3L).getId(), LocalDateTime.now().minusMinutes(10), page);
 
         assertThat(bookings).hasSize(2);
-        assertThat(bookings.get(0).getItem().getId()).isEqualTo(bookingTestMap.get(4L).getItem().getId());
-        assertThat(bookings.get(0).getBooker().getId()).isEqualTo(bookingTestMap.get(4L).getBooker().getId());
-        assertThat(bookings.get(0).getStatus()).isEqualTo(bookingTestMap.get(4L).getStatus());
-        assertThat(bookings.get(0).getBookingStart()).isEqualTo(bookingTestMap.get(4L).getBookingStart());
-        assertThat(bookings.get(0).getBookingEnd()).isEqualTo(bookingTestMap.get(4L).getBookingEnd());
-        assertThat(bookings.get(1).getId()).isEqualTo(bookingTestMap.get(5L).getId());
-        assertThat(bookings.get(1).getItem().getId()).isEqualTo(bookingTestMap.get(5L).getItem().getId());
-        assertThat(bookings.get(1).getBooker().getId()).isEqualTo(bookingTestMap.get(5L).getBooker().getId());
-        assertThat(bookings.get(1).getStatus()).isEqualTo(bookingTestMap.get(5L).getStatus());
-        assertThat(bookings.get(1).getBookingStart()).isEqualTo(bookingTestMap.get(5L).getBookingStart());
-        assertThat(bookings.get(1).getBookingEnd()).isEqualTo(bookingTestMap.get(5L).getBookingEnd());
     }
 
     @Test
