@@ -101,5 +101,4 @@ public class ItemRequestRepositoryJpaTest {
         List<ItemRequest> itemRequests = itemRequestsPage.getContent();
         Assertions.assertEquals(1, itemRequests.size());
     }
-
 }

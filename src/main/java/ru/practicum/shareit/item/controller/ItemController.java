@@ -1,27 +1,19 @@
 package ru.practicum.shareit.item.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/items")
@@ -36,7 +28,7 @@ public class ItemController {
 
     @PostMapping
     public ItemDto addItem(@Valid @RequestBody ItemDto itemDto,
-        @RequestHeader("X-Sharer-User-Id") Long userId) {
+                           @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("Получен запрос на добавление предмета");
         itemService.isUserExistsOrException(userId);
         Item item = itemMapper.convertToEntity(itemService, itemDto, 0L, userId);
@@ -46,7 +38,7 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestBody ItemDto itemDto,
-        @PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) {
+                              @PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("Получен запрос на обновление предмета c id " + itemId);
         itemService.isUserExistsOrException(userId);
         Item item = itemMapper.convertToEntity(itemService, itemDto, itemId, userId);
@@ -62,7 +54,7 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ItemDto getItemById(@PathVariable Long itemId,
-        @RequestHeader("X-Sharer-User-Id") Long userId) {
+                               @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("Получен запрос на получение предмета c id " + itemId);
         Item item = itemService.getItem(itemId);
         if (itemService.isUserAnItemOwner(userId, item)) {
@@ -74,30 +66,30 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> getItemsByUserSearch(@RequestParam String text,
-        @RequestHeader("X-Sharer-User-Id") Long userId,
-        @RequestParam(defaultValue = "0") @Min(0) Integer from,
-        @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+                                              @RequestHeader("X-Sharer-User-Id") Long userId,
+                                              @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                              @RequestParam(defaultValue = "10") @Min(1) Integer size) {
         log.debug("Получен запрос на получение всех предметов пользователя с id" + userId
-            + " и фильтром " + text);
+                + " и фильтром " + text);
         ArrayList<Item> items = new ArrayList<>(
-            itemService.getItemsByNameOrDescriptionSearch(text, from, size));
+                itemService.getItemsByNameOrDescriptionSearch(text, from, size));
         return itemMapper
-            .convertToDtoListOfItems(items, itemService.isUserAnItemsOwner(userId, items));
+                .convertToDtoListOfItems(items, itemService.isUserAnItemsOwner(userId, items));
     }
 
     @GetMapping
     public List<ItemDto> getAllUserItems(@RequestHeader("X-Sharer-User-Id") Long userId,
-        @RequestParam(defaultValue = "0") @Min(0) Integer from,
-        @RequestParam(defaultValue = "10") @Min(1) Integer size) {
+                                         @RequestParam(defaultValue = "0") @Min(0) Integer from,
+                                         @RequestParam(defaultValue = "10") @Min(1) Integer size) {
         log.debug("Получен запрос на получение всех предметов пользователя с id" + userId);
         ArrayList<Item> items = new ArrayList<>(itemService.getUserItems(userId, from, size));
         return itemMapper
-            .convertToDtoListOfItems(items, itemService.isUserAnItemsOwner(userId, items));
+                .convertToDtoListOfItems(items, itemService.isUserAnItemsOwner(userId, items));
     }
 
     @PostMapping("/{itemId}/comment")
     public CommentDto addComment(@Valid @RequestBody CommentDto commentDto,
-        @RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long itemId) {
+                                 @RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long itemId) {
         log.debug("Получен запрос на добавление комментария от пользователя " + userId);
         Comment comment = commentMapper.convertToEntity(commentDto, userId, itemId);
         itemService.addCommentToItem(comment);
