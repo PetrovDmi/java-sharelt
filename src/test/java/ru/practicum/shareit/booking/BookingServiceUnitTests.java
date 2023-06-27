@@ -76,7 +76,6 @@ public class BookingServiceUnitTests {
         mockUserService = Mockito.mock(UserService.class);
         mockItemRepository = Mockito.mock(ItemRepository.class);
         mockUserRepository = Mockito.mock(UserRepository.class);
-        
         Mockito.when(mockItemService.isItemAvailable(4L))
                 .thenReturn(false);
         Mockito.when(mockItemService.isItemAvailable(1L))
