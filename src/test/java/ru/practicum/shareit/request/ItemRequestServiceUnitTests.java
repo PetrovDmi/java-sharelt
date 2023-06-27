@@ -5,14 +5,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.request.service.RequestService;
 import ru.practicum.shareit.request.service.RequestServiceImpl;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -28,6 +32,8 @@ public class ItemRequestServiceUnitTests {
     private RequestRepository mockItemRequestRepository;
     private UserService mockUserService;
     private ItemService itemService;
+    private ItemRepository mockItemRepository;
+    private UserRepository mockUserRepository;
     private PageRequest page = PageRequest.of(0, 10);
 
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
@@ -53,8 +59,10 @@ public class ItemRequestServiceUnitTests {
         mockItemRequestRepository = Mockito.mock(RequestRepository.class);
         mockUserService = Mockito.mock(UserService.class);
         itemService = Mockito.mock(ItemService.class);
-        requestService = new RequestServiceImpl(mockItemRequestRepository, mockUserService,
-                itemService);
+        mockItemRepository = Mockito.mock(ItemRepository.class);
+        mockUserRepository = Mockito.mock(UserRepository.class);
+        requestService = new RequestServiceImpl(mockItemRequestRepository, mockUserRepository,
+                mockItemRepository);
 
         Mockito.when(itemService.getItemsByRequestId(Mockito.anyLong()))
                 .thenReturn(new ArrayList<>());
@@ -73,10 +81,11 @@ public class ItemRequestServiceUnitTests {
         Mockito.when(mockUserService.isUserExists(3L)).thenReturn(true);
         Mockito.when(mockUserService.isUserExists(4L)).thenReturn(false);
 
-        Mockito.when(mockItemRequestRepository.findAllByRequesterIdOrderByIdDesc(1))
-                .thenReturn(List.of(itemRequestTestMap.get(1L), itemRequestTestMap.get(3L)));
-        Mockito.when(mockItemRequestRepository.findByRequesterNotOrderByIdDesc(1, page))
-                .thenReturn(List.of(itemRequestTestMap.get(2L)));
+        Pageable pageable = PageRequest.of(0, 10);
+        Mockito.when(mockItemRequestRepository.findAllByRequesterIdOrderByIdDesc(1L, pageable))
+                .thenReturn(new PageImpl<>(List.of(itemRequestTestMap.get(1L), itemRequestTestMap.get(3L))));
+        Mockito.when(mockItemRequestRepository.findByRequesterNotOrderByIdDesc(1L, pageable))
+                .thenReturn(new PageImpl<>(List.of(itemRequestTestMap.get(2L))));
         Mockito.when(mockItemRequestRepository.save(itemRequestTestMap.get(1L)))
                 .thenReturn(itemRequestTestMap.get(1L));
         Mockito.when(mockItemRequestRepository.save(itemRequestTestMap.get(2L)))

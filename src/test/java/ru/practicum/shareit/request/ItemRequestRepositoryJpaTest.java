@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.model.ItemRequest;
@@ -87,16 +89,17 @@ public class ItemRequestRepositoryJpaTest {
 
     @Test
     void findAllByRequesterIdOrderByIdDescShouldReturnListOfUserRequests() {
-        List<ItemRequest> itemRequests = repository.findAllByRequesterIdOrderByIdDesc(1L);
-        Assertions.assertEquals(2, itemRequests.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<ItemRequest> itemRequests = repository.findAllByRequesterIdOrderByIdDesc(1L, pageable);
+        Assertions.assertEquals(2, itemRequests.getContent().size());
     }
 
     @Test
     void findByRequesterNotOrderByIdDescShouldReturnListOfNotUserRequests() {
-        List<ItemRequest> itemRequests = repository
-                .findByRequesterNotOrderByIdDesc(1L, page);
+        Pageable pageable = PageRequest.of(0, 10); // первая страница, 10 элементов на странице
+        Page<ItemRequest> itemRequestsPage = repository.findByRequesterNotOrderByIdDesc(1L, pageable);
+        List<ItemRequest> itemRequests = itemRequestsPage.getContent();
         Assertions.assertEquals(1, itemRequests.size());
     }
-
 
 }

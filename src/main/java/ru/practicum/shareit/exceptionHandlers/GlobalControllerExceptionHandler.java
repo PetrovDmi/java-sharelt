@@ -1,7 +1,10 @@
 package ru.practicum.shareit.exceptionHandlers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,11 +33,11 @@ public class GlobalControllerExceptionHandler {
         return Map.of("Ошибка валидации", exception.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleRunTimeException(final RuntimeException exception) {
-        log.error("Неизвестная ошибка");
-        return Map.of("Что-то пошло не так", exception.getMessage());
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleRunTimeException(final Throwable throwable) {
+        log.error("Произошла неизвестная ошибка", throwable);
+        return Map.of("message", "Возникла ошибка сервера, обратитесь к администратору");
     }
 
     @ExceptionHandler
@@ -43,5 +46,19 @@ public class GlobalControllerExceptionHandler {
             final StateNotSupportedException exception) {
         log.error("Ошибка получения состояния бронирования");
         return new ErrorResponse(500, "Bad Request", exception.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> handleDuplicateKeyException(DuplicateKeyException ex) {
+        String message = "Пользователь с такой электронной почтой уже существует";
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String message = "Пользователь с таким ID уже существует";
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
     }
 }

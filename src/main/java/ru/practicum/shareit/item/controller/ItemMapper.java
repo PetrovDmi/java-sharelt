@@ -5,7 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.controller.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.booking.model.enums.Status;
+import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
@@ -13,23 +14,23 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.service.ItemService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @Component
 public class ItemMapper {
-
     private final ModelMapper modelMapper = new ModelMapper();
-    private final BookingService bookingService;
+    private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
     public ItemDto convertToDtoForOwner(Item item) {
         ItemDto itemDto = modelMapper.map(item, ItemDto.class);
-        Booking lastBooking = bookingService.getItemLastBooking(item.getId());
-        Booking nextBooking = bookingService.getItemNextBooking(item.getId());
+        Booking lastBooking = getItemLastBooking(item.getId());
+        Booking nextBooking = getItemNextBooking(item.getId());
         itemDto.setLastBooking(bookingMapper.convertToShort(lastBooking));
         itemDto.setNextBooking(bookingMapper.convertToShort(nextBooking));
         List<Comment> comments = commentRepository.findAllByItemId(item.getId());
@@ -39,6 +40,24 @@ public class ItemMapper {
         }
 
         return itemDto;
+    }
+
+    public Booking getItemLastBooking(long itemId) {
+        List<Booking> bookings = bookingRepository
+                .findAllByItemAndStatePast(itemId, LocalDateTime.now(), Status.REJECTED);
+        if (bookings.size() == 0) {
+            return null;
+        }
+        return bookings.get(0);
+    }
+
+    public Booking getItemNextBooking(long itemId) {
+        List<Booking> bookings = bookingRepository
+                .findAllByItemAndStateFuture(itemId, LocalDateTime.now(), Status.REJECTED);
+        if (bookings.size() == 0) {
+            return null;
+        }
+        return bookings.get(0);
     }
 
     public ItemDto convertToDtoForUser(Item item) {

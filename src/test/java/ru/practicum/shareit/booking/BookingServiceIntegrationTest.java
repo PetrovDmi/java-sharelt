@@ -136,6 +136,25 @@ public class BookingServiceIntegrationTest {
         Assertions.assertEquals(bookingOne.getBooker().getId(), bookingBooker.getBooker().getId());
     }
 
+    /*@Test
+    void getAllBookingOfUserWithStateAllShouldReturnListOfBookings() {
+        bookingService.addBooking(bookingOne, bookingOne.getBooker().getId(),
+                bookingOne.getItem().getId());
+        bookingService.addBooking(bookingTwo, bookingTwo.getBooker().getId(),
+                bookingTwo.getItem().getId());
+        bookingService.addBooking(bookingThree, bookingThree.getBooker().getId(),
+                bookingThree.getItem().getId());
+        bookingService.addBooking(bookingFour, bookingFour.getBooker().getId(),
+                bookingFour.getItem().getId());
+        bookingService.addBooking(bookingFive, bookingFive.getBooker().getId(),
+                bookingFive.getItem().getId());
+
+        List<Booking> bookings = bookingService
+                .getAllBookingOfUserWithState(userTestMap.get(3L).getId(), "ALL", 0, 10);
+
+        Assertions.assertEquals(4, bookings.size());
+    }*/
+
     @Test
     void getAllBookingOfUserWithStateAllShouldReturnListOfBookings() {
         bookingService.addBooking(bookingOne, bookingOne.getBooker().getId(),
@@ -153,6 +172,16 @@ public class BookingServiceIntegrationTest {
                 .getAllBookingOfUserWithState(userTestMap.get(3L).getId(), "ALL", 0, 10);
 
         Assertions.assertEquals(4, bookings.size());
+
+        Booking firstBooking = bookings.get(0);
+        Assertions.assertEquals(bookingOne.getId(), 4);
+        Assertions.assertEquals(bookingOne.getItem().getId(), firstBooking.getItem().getId());
+        Assertions.assertEquals(bookingOne.getBooker().getId(), firstBooking.getBooker().getId());
+
+        Booking secondBooking = bookings.get(1);
+        Assertions.assertEquals(bookingTwo.getId(), secondBooking.getId());
+        Assertions.assertEquals(bookingTwo.getItem().getId(), secondBooking.getItem().getId());
+        Assertions.assertEquals(bookingTwo.getBooker().getId(), secondBooking.getBooker().getId());
     }
 
     @Test

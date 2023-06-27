@@ -13,7 +13,8 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -28,9 +29,18 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final CommentRepository commentRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private static final int ITEM_LIST_PAGE_SIZE = 10;
+
+    @Override
+    @Transactional(readOnly = true)
+    public void isUserExistsOrException(long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new NotFoundException("Пользователь не был найден");
+        }
+    }
 
     @Override
     @Transactional
@@ -79,7 +89,6 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public List<Item> getUserItems(long userId, int from, int size) {
         log.info("Получение списка всех предметов пользователя с id " + userId);
-        PageRequest page = PageRequest.of(from > 0 ? from / size : 0, size);
         return itemRepository.findAllByUserIdOrderById(userId);
     }
 
@@ -136,14 +145,6 @@ public class ItemServiceImpl implements ItemService {
         log.info("Получение предметов по запросу с id " + requestId);
         PageRequest page = PageRequest.of(0, ITEM_LIST_PAGE_SIZE);
         return itemRepository.findAllByRequestIdOrderById(requestId, page);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public void isUserExistsOrException(long userId) {
-        if (!userService.isUserExists(userId)) {
-            throw new NotFoundException("Пользователь не найден!");
-        }
     }
 
     public boolean isUserWasAnItemBooker(long userId, long itemId) {

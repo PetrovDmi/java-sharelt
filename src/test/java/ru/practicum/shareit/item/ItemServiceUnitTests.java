@@ -17,6 +17,7 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.service.ItemServiceImpl;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import javax.validation.ValidationException;
@@ -34,6 +35,7 @@ public class ItemServiceUnitTests {
     private CommentRepository mockCommentRepository;
     private UserService mockUserService;
     private BookingRepository mockBookingRepository;
+    private UserRepository mockUserRepository;
 
     private PageRequest page = PageRequest.of(0, 10);
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
@@ -63,9 +65,6 @@ public class ItemServiceUnitTests {
 
     Booking booking = new Booking(1, itemTestMap.get(1L), userTestMap.get(2L), Status.APPROVED,
             created.minusHours(4), created.minusHours(1));
-/*
-    ItemRequest itemRequest = new ItemRequest(1, "Ищу дрель", userTestMap.get(3L),
-        created,null);*/
 
     @BeforeEach
     void setUp() {
@@ -73,9 +72,10 @@ public class ItemServiceUnitTests {
         mockBookingRepository = Mockito.mock(BookingRepository.class);
         mockCommentRepository = Mockito.mock(CommentRepository.class);
         mockUserService = Mockito.mock(UserService.class);
+        mockUserRepository = Mockito.mock(UserRepository.class);
 
         itemService = new ItemServiceImpl(mockItemRepository, mockCommentRepository,
-                mockUserService,
+                mockUserRepository,
                 mockBookingRepository);
 
         Mockito.when(mockItemRepository.findById(5L)).thenReturn(Optional.empty());

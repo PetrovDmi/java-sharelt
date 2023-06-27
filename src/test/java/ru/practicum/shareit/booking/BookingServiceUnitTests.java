@@ -14,8 +14,10 @@ import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.service.BookingServiceImpl;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import javax.validation.ValidationException;
@@ -31,6 +33,8 @@ public class BookingServiceUnitTests {
     private BookingRepository mockBookingRepository;
     private ItemService mockItemService;
     private UserService mockUserService;
+    private ItemRepository mockItemRepository;
+    private UserRepository mockUserRepository;
     private PageRequest page = PageRequest.of(0, 10);
 
     private final Map<Long, User> userTestMap = Map.of(
@@ -70,7 +74,9 @@ public class BookingServiceUnitTests {
         mockBookingRepository = Mockito.mock(BookingRepository.class);
         mockItemService = Mockito.mock(ItemService.class);
         mockUserService = Mockito.mock(UserService.class);
-
+        mockItemRepository = Mockito.mock(ItemRepository.class);
+        mockUserRepository = Mockito.mock(UserRepository.class);
+        
         Mockito.when(mockItemService.isItemAvailable(4L))
                 .thenReturn(false);
         Mockito.when(mockItemService.isItemAvailable(1L))
@@ -108,8 +114,8 @@ public class BookingServiceUnitTests {
         Mockito.when(mockBookingRepository.findAll())
                 .thenReturn(new ArrayList<>(bookingTestMap.values()));
 
-        bookingService = new BookingServiceImpl(mockBookingRepository, mockItemService,
-                mockUserService);
+        bookingService = new BookingServiceImpl(mockBookingRepository, mockItemRepository,
+                mockUserRepository);
     }
 
     @AfterEach
@@ -348,4 +354,11 @@ public class BookingServiceUnitTests {
                         Mockito.any(Status.class));
     }
 
+    public UserRepository getMockUserRepository() {
+        return mockUserRepository;
+    }
+
+    public void setMockUserRepository(UserRepository mockUserRepository) {
+        this.mockUserRepository = mockUserRepository;
+    }
 }

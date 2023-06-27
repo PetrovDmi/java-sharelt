@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exceptions.NotFoundException;
@@ -22,14 +23,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(User user) {
         log.info("Создание нового пользователя");
-        userRepository.save(user);
+        String email = userRepository.findById(user.getId()).map(User::getEmail).orElse(null);
+        if (email != null) {
+            throw new DataIntegrityViolationException("Пользователь с таким ID уже существует");
+        }
+        userRepository.saveAndFlush(user);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
         log.info("Изменение пользователя с id " + user.getId());
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -68,5 +73,4 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
 }
