@@ -15,10 +15,8 @@ import ru.practicum.shareit.booking.service.BookingServiceImpl;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -31,11 +29,9 @@ public class BookingServiceUnitTests {
 
     private BookingService bookingService;
     private BookingRepository mockBookingRepository;
-    private ItemService mockItemService;
-    private UserService mockUserService;
     private ItemRepository mockItemRepository;
     private UserRepository mockUserRepository;
-    private PageRequest page = PageRequest.of(0, 10);
+    private final PageRequest page = PageRequest.of(0, 10);
 
     private final Map<Long, User> userTestMap = Map.of(
             1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),
@@ -72,39 +68,17 @@ public class BookingServiceUnitTests {
     @BeforeEach
     public void setUp() {
         mockBookingRepository = Mockito.mock(BookingRepository.class);
-        mockItemService = Mockito.mock(ItemService.class);
-        mockUserService = Mockito.mock(UserService.class);
         mockItemRepository = Mockito.mock(ItemRepository.class);
         mockUserRepository = Mockito.mock(UserRepository.class);
-        Mockito.when(mockItemService.isItemAvailable(4L))
-                .thenReturn(false);
-        Mockito.when(mockItemService.isItemAvailable(1L))
-                .thenReturn(true);
-        Mockito.when(mockItemService.isItemAvailable(2L))
-                .thenReturn(true);
-        Mockito.when(mockItemService.isItemAvailable(3L))
-                .thenReturn(true);
-        Mockito.when(mockUserService.getUserById(1L))
-                .thenReturn(userTestMap.get(1L));
-        Mockito.when(mockItemService.getItem(1L))
-                .thenReturn(itemTestMap.get(1L));
-        Mockito.when(mockUserService.getUserById(2L))
-                .thenReturn(userTestMap.get(2L));
-        Mockito.when(mockItemService.getItem(2L))
-                .thenReturn(itemTestMap.get(2L));
-        Mockito.when(mockUserService.getUserById(3L))
-                .thenReturn(userTestMap.get(3L));
-        Mockito.when(mockItemService.getItem(3L))
-                .thenReturn(itemTestMap.get(3L));
-        Mockito.when(mockItemService.getItem(3L))
-                .thenReturn(itemTestMap.get(4L));
 
-        Mockito.when(mockUserService.isUserExists(1L))
-                .thenReturn(true);
-        Mockito.when(mockUserService.isUserExists(2L))
-                .thenReturn(true);
-        Mockito.when(mockUserService.isUserExists(3L))
-                .thenReturn(true);
+        Mockito.when(mockUserRepository.findById(3L)).thenReturn(Optional.ofNullable(userTestMap.get(3L)));
+        Mockito.when(mockUserRepository.findById(2L)).thenReturn(Optional.ofNullable(userTestMap.get(2L)));
+        Mockito.when(mockUserRepository.findById(1L)).thenReturn(Optional.ofNullable(userTestMap.get(1L)));
+
+        Mockito.when(mockItemRepository.findById(1L)).thenReturn(Optional.ofNullable(itemTestMap.get(1L)));
+        Mockito.when(mockItemRepository.findById(2L)).thenReturn(Optional.ofNullable(itemTestMap.get(2L)));
+        Mockito.when(mockItemRepository.findById(3L)).thenReturn(Optional.ofNullable(itemTestMap.get(3L)));
+        Mockito.when(mockItemRepository.findById(4L)).thenReturn(Optional.ofNullable(itemTestMap.get(4L)));
 
         Mockito.when(mockBookingRepository.findById(1L))
                 .thenReturn(Optional.ofNullable(bookingTestMap.get(1L)));
@@ -197,7 +171,7 @@ public class BookingServiceUnitTests {
     void getAllBookingOfUserWithStateUserNotExistShouldThrowNotFoundException() {
         final NotFoundException exception = Assertions.assertThrows(NotFoundException.class,
                 () -> bookingService.getAllBookingOfUserWithState(5L, "ALL", 0, 10));
-        Assertions.assertEquals("Пользователь не был найден", exception.getMessage());
+        Assertions.assertEquals("Пользователь с id 5 не найден", exception.getMessage());
     }
 
     @Test
@@ -266,7 +240,7 @@ public class BookingServiceUnitTests {
         final NotFoundException exception = Assertions.assertThrows(NotFoundException.class,
                 () -> bookingService.getAllBookingForItemsOfOwnerWithState(5L, "ALL",
                         0, 10));
-        Assertions.assertEquals("Пользователь не был найден", exception.getMessage());
+        Assertions.assertEquals("Пользователь с id 5 не найден", exception.getMessage());
     }
 
     @Test

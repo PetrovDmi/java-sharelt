@@ -24,7 +24,7 @@ public class ItemRepositoryJpaTest {
     private TestEntityManager em;
     @Autowired
     private ItemRepository itemRepository;
-    private PageRequest page = PageRequest.of(0, 10);
+    private final PageRequest page = PageRequest.of(0, 10);
 
     private final Map<Long, User> userTestMap = Map.of(
             1L, new User(1, "testUserOne", "testUserOne@yandex.ru"),

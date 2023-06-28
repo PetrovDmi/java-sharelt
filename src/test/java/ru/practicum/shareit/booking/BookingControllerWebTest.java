@@ -205,7 +205,7 @@ public class BookingControllerWebTest {
                         .header("X-Sharer-User-Id", 2L))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is((int) (long) booking.getId())))
+                .andExpect(jsonPath("$.id", is((int) booking.getId())))
                 .andExpect(jsonPath("$.status", is(booking.getStatus().toString())));
     }
 
@@ -252,6 +252,6 @@ public class BookingControllerWebTest {
         mvc.perform(get("/bookings")
                         .header("X-Sharer-User-Id", "1")
                         .param("state", "COMPLEX"))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
     }
 }

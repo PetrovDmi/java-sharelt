@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Override
+    /*@Override
     @Transactional
     public void addUser(User user) {
         log.info("Создание нового пользователя");
@@ -28,13 +28,32 @@ public class UserServiceImpl implements UserService {
             throw new DataIntegrityViolationException("Пользователь с таким ID уже существует");
         }
         userRepository.saveAndFlush(user);
+    }*/
+    @Override
+    @Transactional
+    public void addUser(User user) {
+        log.info("Создание нового пользователя");
+        if (userRepository.existsById(user.getId())) {
+            throw new DataIntegrityViolationException("Пользователь с таким ID уже существует");
+        }
+        String email = userRepository.findById(user.getId()).map(User::getEmail).orElse(null);
+        if (email != null) {
+            throw new DataIntegrityViolationException("Пользователь с таким ID уже существует");
+        }
+        userRepository.save(user);
     }
 
-    @Override
+    /*@Override
     @Transactional
     public void updateUser(User user) {
         log.info("Изменение пользователя с id " + user.getId());
         userRepository.saveAndFlush(user);
+    }*/
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        log.info("Обновление пользователя");
+        userRepository.save(user);
     }
 
     @Override

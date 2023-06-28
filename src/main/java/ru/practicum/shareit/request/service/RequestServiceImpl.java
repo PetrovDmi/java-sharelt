@@ -58,7 +58,7 @@ public class RequestServiceImpl implements RequestService {
     public List<ItemRequest> getUserRequestsById(long userId) {
         log.info("Получение запросов на предметы от пользователя с id " + userId);
         Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
+        if (!optionalUser.isPresent()) {
             throw new NotFoundException("Пользователь не был найден");
         }
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "id");

@@ -37,7 +37,7 @@ public class ItemServiceUnitTests {
     private BookingRepository mockBookingRepository;
     private UserRepository mockUserRepository;
 
-    private PageRequest page = PageRequest.of(0, 10);
+    private final PageRequest page = PageRequest.of(0, 10);
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
             10, 0, 0);
 
@@ -270,8 +270,10 @@ public class ItemServiceUnitTests {
     }
 
     @Test
-    void isUserExistsOrExceptionUserExistsShouldDoNothing() {
-        itemService.isUserExistsOrException(1L);
+    void isUserExistsOrException_UserDoesNotExist_ShouldThrowNotFoundException() {
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            itemService.isUserExistsOrException(10L);
+        });
     }
 
     @Test
@@ -280,6 +282,6 @@ public class ItemServiceUnitTests {
                 () -> itemService.isUserExistsOrException(4L)
         );
 
-        Assertions.assertEquals("Пользователь не найден!", exception.getMessage());
+        Assertions.assertEquals("Пользователь не был найден", exception.getMessage());
     }
 }

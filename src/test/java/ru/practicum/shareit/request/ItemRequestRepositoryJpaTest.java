@@ -29,7 +29,7 @@ public class ItemRequestRepositoryJpaTest {
     @Autowired
     private RequestRepository repository;
 
-    private PageRequest page = PageRequest.of(0, 10);
+    private final PageRequest page = PageRequest.of(0, 10);
 
     LocalDateTime created = LocalDateTime.of(2023, 5, 19,
             10, 0, 0);

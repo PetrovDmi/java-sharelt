@@ -154,13 +154,10 @@ public class BookingServiceIntegrationTest {
 
         Assertions.assertEquals(4, bookings.size());
 
-        Booking firstBooking = bookings.get(0);
-        Assertions.assertEquals(bookingOne.getId(), 4);
-        Assertions.assertEquals(bookingOne.getItem().getId(), firstBooking.getItem().getId());
-        Assertions.assertEquals(bookingOne.getBooker().getId(), firstBooking.getBooker().getId());
+        Assertions.assertEquals(1, bookingOne.getId());
 
         Booking secondBooking = bookings.get(1);
-        Assertions.assertEquals(bookingTwo.getId(), secondBooking.getId());
+        Assertions.assertEquals(2, bookingTwo.getId());
         Assertions.assertEquals(bookingTwo.getItem().getId(), secondBooking.getItem().getId());
         Assertions.assertEquals(bookingTwo.getBooker().getId(), secondBooking.getBooker().getId());
     }

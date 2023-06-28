@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking getBookingById(long bookingId, long userId) {
         log.info("Получение объекта бронирования с id " + bookingId);
         Booking booking = getBookingById(bookingId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
         if (!(isUserAnItemOwner(userId, booking) || isUserAnItemBooker(userId, booking))) {
             throw new NotFoundException("Доступ к предмету ограничен хозяином или резерватором");
         }
@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional(readOnly = true)
     public List<Booking> getAllBookingOfUserWithState(long userId, String state, int from, int size) {
         log.info("Получить все данные о бронированиях текущего пользователя");
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Пользователь с id " + userId + " не найден"));
         State curState = State.convert(state);
         PageRequest page = PageRequest.of(from > 0 ? from / size : 0, size);
         switch (curState) {

@@ -29,6 +29,8 @@ public class UserServiceUnitTests {
             3L, new User(3, "testUserThree", "testUserThree@yandex.ru")
     );
 
+    private final User user6 = new User(6, "testUser5", "testUser5@yandex.ru");
+
     @BeforeEach
     void setUp() {
         mockUserRepository = Mockito.mock(UserRepository.class);
@@ -44,20 +46,44 @@ public class UserServiceUnitTests {
                 .thenThrow(new NotFoundException("пользователь не найден"));
         Mockito.when(mockUserRepository.findAll())
                 .thenReturn(new ArrayList<>(userTestMap.values()));
+        Mockito.when(mockUserRepository.findById(6L)).thenReturn(Optional.empty());
     }
 
+    /*@Test
+    void addUserShouldCallRepositorySaveMethod() {
+        userService.addUser(user6);
+        Mockito.verify(mockUserRepository, Mockito.times(1))
+                .save(user6);
+    }*/
     @Test
     void addUserShouldCallRepositorySaveMethod() {
-        userService.addUser(userTestMap.get(1L));
-        Mockito.verify(mockUserRepository, Mockito.times(1))
-                .save(userTestMap.get(1L));
+        // Подготовка
+        Mockito.when(mockUserRepository.findById(6L)).thenReturn(Optional.empty());
+
+        // Выполнение
+        userService.addUser(user6);
+
+        // Проверка
+        Mockito.verify(mockUserRepository, Mockito.times(1)).save(user6);
     }
 
-    @Test
+    /*@Test
     void updateUserShouldCallRepositorySaveMethod() {
         userService.updateUser(userTestMap.get(1L));
         Mockito.verify(mockUserRepository, Mockito.times(1))
                 .save(userTestMap.get(1L));
+    }*/
+    @Test
+    void updateUserShouldCallRepositorySaveMethod() {
+        // Подготовка
+        User updatedUser = userTestMap.get(1L);
+        Mockito.when(mockUserRepository.save(updatedUser)).thenReturn(updatedUser);
+
+        // Выполнение
+        userService.updateUser(updatedUser);
+
+        // Проверка
+        Mockito.verify(mockUserRepository, Mockito.times(1)).save(updatedUser);
     }
 
     @Test
