@@ -207,17 +207,6 @@ public class ItemControllerWebTest {
                 .andExpect(jsonPath("$.description", is(itemTestMap.get(1L).getDescription())));
     }
 
-    /*@Test
-    void getItemByIdByOwnerShouldReturnItem() throws Exception {
-        mvc.perform(get("/items/2").header("X-Sharer-User-Id", 2))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(itemTestMap.get(2L).getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(itemTestMap.get(2L).getName())))
-                .andExpect(jsonPath("$.description", is(itemTestMap.get(2L).getDescription())))
-                .andExpect(jsonPath("$.lastBooking.id", is(booking.getId()), Long.class));
-    }*/
-
     @Test
     void getItemByIdByOwnerShouldReturnItem() throws Exception {
         mvc.perform(get("/items/2").header("X-Sharer-User-Id", 2))
@@ -247,8 +236,8 @@ public class ItemControllerWebTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    /*@Test
-    void addCommentShouldAddAComment() throws Exception {
+    @Test
+    void addBadCommentShouldBadRequestAComment() throws Exception {
         mvc.perform(post("/items/1/comment")
                         .header("X-Sharer-User-Id", 1)
                         .content(mapper.writeValueAsString(commentTestDto))
@@ -256,8 +245,8 @@ public class ItemControllerWebTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk());
-    }*/
+                .andExpect(status().isBadRequest());
+    }
 
     @Test
     void unknownMethodShouldReturnInternalServer() throws Exception {

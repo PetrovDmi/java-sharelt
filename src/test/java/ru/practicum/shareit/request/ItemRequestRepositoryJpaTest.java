@@ -96,7 +96,7 @@ public class ItemRequestRepositoryJpaTest {
 
     @Test
     void findByRequesterNotOrderByIdDescShouldReturnListOfNotUserRequests() {
-        Pageable pageable = PageRequest.of(0, 10); // первая страница, 10 элементов на странице
+        Pageable pageable = PageRequest.of(0, 10);
         Page<ItemRequest> itemRequestsPage = repository.findByRequesterNotOrderByIdDesc(1L, pageable);
         List<ItemRequest> itemRequests = itemRequestsPage.getContent();
         Assertions.assertEquals(1, itemRequests.size());

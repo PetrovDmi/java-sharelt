@@ -172,5 +172,4 @@ public class ItemServiceIntegrationTest {
         Assertions.assertEquals(3, items.size());
     }
 
-
 }

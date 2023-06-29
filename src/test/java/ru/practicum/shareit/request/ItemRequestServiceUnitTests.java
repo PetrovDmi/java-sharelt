@@ -95,36 +95,18 @@ public class ItemRequestServiceUnitTests {
                 .thenReturn(itemRequestTestMap.get(3L));
     }
 
-    /*@Test
-    void addItemRequestShouldCallRepositorySaveMethod() {
-        ItemRequest itemRequest = requestService.addItemRequest(itemRequestTestMap.get(1L),
-                itemRequestTestMap.get(1L).getRequester().getId());
-        Mockito.verify(mockItemRequestRepository, Mockito.times(1))
-                .save(itemRequestTestMap.get(1L));
-        Assertions.assertEquals(itemRequestTestMap.get(1L).getId(), itemRequest.getId());
-        Assertions.assertEquals(itemRequestTestMap.get(1L).getDescription(),
-                itemRequest.getDescription());
-        Assertions.assertEquals(itemRequestTestMap.get(1L).getCreated(),
-                itemRequest.getCreated());
-    }*/
     @Test
     void addItemRequestShouldCallRepositorySaveMethod() {
-        // Создание объекта запроса предмета из начальных данных
         ItemRequest itemRequest = itemRequestTestMap.get(1L);
 
-        // Создание пользователя из начальных данных
         User requester = userTestMap.get(itemRequest.getRequester().getId());
 
-        // Мокирование метода findById у userRepository
         Mockito.when(mockUserRepository.findById(requester.getId())).thenReturn(Optional.of(requester));
 
-        // Вызов метода addItemRequest
         ItemRequest result = requestService.addItemRequest(itemRequest, requester.getId());
 
-        // Проверка вызова метода save у mockItemRequestRepository
         Mockito.verify(mockItemRequestRepository, Mockito.times(1)).save(itemRequest);
 
-        // Проверка ожидаемых значений
         Assertions.assertEquals(itemRequest.getId(), result.getId());
         Assertions.assertEquals(itemRequest.getDescription(), result.getDescription());
         Assertions.assertEquals(itemRequest.getCreated(), result.getCreated());
@@ -149,19 +131,14 @@ public class ItemRequestServiceUnitTests {
 
     @Test
     void getItemRequestByIdShouldReturnRequest() {
-        // Создание объекта запроса предмета из начальных данных
         ItemRequest itemRequest = itemRequestTestMap.get(1L);
 
-        // Создание пользователя из начальных данных
         User requester = userTestMap.get(itemRequest.getRequester().getId());
 
-        // Мокирование метода findById у userRepository
         Mockito.when(mockUserRepository.findById(requester.getId())).thenReturn(Optional.of(requester));
 
-        // Вызов метода getItemRequestById
         ItemRequest result = requestService.getItemRequestById(itemRequest.getId(), requester.getId());
 
-        // Проверка ожидаемых значений
         Assertions.assertEquals(itemRequest.getId(), result.getId());
         Assertions.assertEquals(itemRequest.getCreated(), result.getCreated());
         Assertions.assertEquals(itemRequest.getDescription(), result.getDescription());
